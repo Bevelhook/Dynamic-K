@@ -94,6 +94,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 } # Core library for model management, API calls
     premiumUtils.ts   # Utilities for credits/payments handling (optional)
   /api
-    route.ts          # Main backend API handler
+    route.ts          # gcloud auth configure-docker
+docker tag blinkshot-backend gcr.io/<your-project-id>/blinkshot-backend
+docker push gcr.io/<your-project-id>/blinkshot-backendMain backend API handler
   app.ts              # Main server config/setup (optional for Next.js apps)
   index.html          # Frontend interface
