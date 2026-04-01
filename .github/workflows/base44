@@ -1,0 +1,46 @@
+// src/api/route.ts
+import express from 'express';
+import GrokLibrary from '../library/grokCore';
+import { getCredits, spendCredits } from '../library/premiumUtils';
+import cors from 'cors';
+
+const router = express.Router();
+router.use(cors());
+router.use(express.json());
+
+// ✅ NEW: Dynamic models endpoint so frontend dropdown is always up-to-date
+router.get('/models', (req, res) => {
+  res.json(GrokLibrary.models);
+});
+
+router.post('/generateImages', async (req, res) => {
+  const { prompt, style, iterativeMode, model, referenceImage } = req.body;
+  const ip = req.ip || 'unknown';
+
+  const config = GrokLibrary.getModelConfig(model);
+  if (!config) {
+    return res.status(400).json({ error: 'Invalid model selected' });
+  }
+
+  const cost = config.cost;
+  if (!spendCredits(ip, cost)) {
+    return res.status(402).json({ error: `Insufficient credits. This model costs ${cost} credits.` });
+  }
+
+  try {
+    const base64 = await GrokLibrary.generate(
+      { prompt, style, iterativeMode, referenceImage },
+      model
+    );
+    res.json({ 
+      image: base64, 
+      modelUsed: config.name,
+      creditsSpent: cost 
+    });
+  } catch (err: any) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+export default router;
