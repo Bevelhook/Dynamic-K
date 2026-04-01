@@ -1,5 +1,48 @@
 /src
   /library
+import dotenv from 'dotenv';
+dotenv.config();
+
+type ModelConfig = {
+  name: string;
+  apiKeyRequired: boolean;
+  cost: number; // in credits
+  provider: 'together' | 'xai' | 'fal' | 'ideogram'; // for future extensibility
+};
+
+type GenerateOptions = {
+  prompt: string;
+  style?: string;
+  iterativeMode?: boolean;
+  referenceImage?: string; // base64 for Kontext-style editing
+};
+
+const GrokLibrary = (() => {
+  // Model Configurations - Dynamic and Scalable
+  const models: Record<string, ModelConfig> = {
+    ... // Same configuration as before
+  };
+
+  const buildPrompt = (prompt: string, style?: string) =>
+    style ? `${prompt}, ${style} style` : prompt;
+
+  const generate = async (options: GenerateOptions, modelKey: string): Promise<string> => {
+    ... // Entire generate() logic from the earlier implementation
+  };
+
+  const normalizeResponse = async (response: Response, provider: string) => {
+    ... // Handle API-specific response parsing (from earlier)
+  };
+
+  return {
+    models,
+    generate,
+    getModelConfig: (key: string) => models[key],
+  };
+})();
+
+export default GrokLibrary;
+export type { ModelConfig, GenerateOptions };
     grokCore.ts       # Core library for model management, API calls
     premiumUtils.ts   # Utilities for credits/payments handling (optional)
   /api
