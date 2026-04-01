@@ -1,3 +1,5 @@
+https://github.com/apple/unityplugins/blob/main/scripts/python/upi_unity_native_plugin_manager.py
+
 /src
   /library
 import dotenv from 'dotenv';
