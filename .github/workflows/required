@@ -41,7 +41,26 @@ const GrokLibrary = (() => {
   };
 })();
 
-export default GrokLibrary;
+export default GrokLibrary;import GrokLibrary from "../library/grokCore";
+
+export default async function handler(req, res) {
+  const { prompt, model, style, iterativeMode = false, referenceImage = null } = req.body;
+
+  if (!prompt || !model) {
+    return res.status(400).json({ error: "Missing required fields (prompt, model)." });
+  }
+
+  try {
+    const base64Image = await GrokLibrary.generate(
+      { prompt, style, iterativeMode, referenceImage },
+      model
+    );
+    res.status(200).json({ image: base64Image });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+}
 export type { ModelConfig, GenerateOptions };
     grokCore.ts       # Core library for model management, API calls
     premiumUtils.ts   # Utilities for credits/payments handling (optional)
