@@ -62,7 +62,36 @@ export default async function handler(req, res) {
   }
 }
 export type { ModelConfig, GenerateOptions };
-    grokCore.ts       # Core library for model management, API calls
+    grokCore.ts    import { NextApiRequest, NextApiResponse } from 'next';
+import GrokLibrary from '../library/grokCore';
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const { prompt, modelKey, style, iterativeMode = false, referenceImage } = req.body;
+
+  if (!prompt || !modelKey) {
+    return res.status(400).json({
+      error: 'Missing required fields: `prompt` or `modelKey`.',
+    });
+  }
+
+  try {
+    const imageBase64 = await GrokLibrary.generate(
+      { prompt, style, iterativeMode, referenceImage },
+      modelKey
+    );
+
+    return res.status(200).json({
+      success: true,
+      image: imageBase64,
+    });
+  } catch (err: any) {
+    console.error(err.message);
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+} # Core library for model management, API calls
     premiumUtils.ts   # Utilities for credits/payments handling (optional)
   /api
     route.ts          # Main backend API handler
