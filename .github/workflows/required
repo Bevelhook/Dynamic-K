@@ -1,0 +1,8 @@
+/src
+  /library
+    grokCore.ts       # Core library for model management, API calls
+    premiumUtils.ts   # Utilities for credits/payments handling (optional)
+  /api
+    route.ts          # Main backend API handler
+  app.ts              # Main server config/setup (optional for Next.js apps)
+  index.html          # Frontend interface
