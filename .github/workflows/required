@@ -98,4 +98,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 docker tag blinkshot-backend gcr.io/<your-project-id>/blinkshot-backend
 docker push gcr.io/<your-project-id>/blinkshot-backendMain backend API handler
   app.ts              # Main server config/setup (optional for Next.js apps)
-  index.html          # Frontend interface
+  index.html          # curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gzFrontend interface
